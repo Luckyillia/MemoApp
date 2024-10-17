@@ -2,7 +2,6 @@ package com.example.memoapp;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -14,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
+    //deklaracja zmienych
     private List<ImageButton> buttons;
     private List<Drawable> images;
     private ImageButton buttonIsCheacked1 = null;
@@ -27,35 +27,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //zmiene dodatkowe
         Button butto = findViewById(R.id.button);
         textView = findViewById(R.id.counter);
         default_image = ContextCompat.getDrawable(this, R.drawable.karty_00);
 
+        //tworzenie listy zdjec
         images = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
-            String imageName = "karty_0" + i;
-            Drawable image = ContextCompat.getDrawable(this, getResources().getIdentifier(imageName, "drawable", getPackageName()));
+        //tworzenie listy id zdjec
+        int[] imageIDs = {
+                R.drawable.karty_01, R.drawable.karty_02, R.drawable.karty_03, R.drawable.karty_04,
+                R.drawable.karty_05, R.drawable.karty_06, R.drawable.karty_07, R.drawable.karty_08
+        };
+        //wypelnianie listy zdjec za pomoca listy id zdjec x2
+        for (int imageID : imageIDs) {
+            Drawable image = ContextCompat.getDrawable(this, imageID);
             images.add(image);
             images.add(image);
         }
 
         Collections.shuffle(images);
-
+        //tworzenie listy przyciskow
         buttons = new ArrayList<>();
-        for (int i = 1; i <= 16; i++) {
-            String buttonID = "karta" + i;
-            int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
+        //tworzenie listy id przyciskow
+        int[] buttonIDs = {
+                R.id.karta1, R.id.karta2, R.id.karta3, R.id.karta4,
+                R.id.karta5, R.id.karta6, R.id.karta7, R.id.karta8,
+                R.id.karta9, R.id.karta10, R.id.karta11, R.id.karta12,
+                R.id.karta13, R.id.karta14, R.id.karta15, R.id.karta16
+        };
+        //wypelnianie listy przyciskow za pomoca listy id przyciskow
+        for (int resID : buttonIDs) {
             ImageButton button = findViewById(resID);
             buttons.add(button);
         }
 
+        //Obsluga przyciskow
         for (int i = 0; i < buttons.size(); i++) {
             ImageButton button = buttons.get(i);
             int index = i;
             button.setOnClickListener(v -> {
                 Drawable currentImage = images.get(index);
                 button.setImageDrawable(currentImage);
-
+                //logika gry
                 if(buttonIsCheacked1 != null && buttonIsCheacked2 != null){
                     buttonIsCheacked1.setImageDrawable(default_image);
                     buttonIsCheacked2.setImageDrawable(default_image);
@@ -83,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
+        //Obsluga przycisku reset
         butto.setOnClickListener(v -> {
             Collections.shuffle(images);
             for (ImageButton b : buttons) {

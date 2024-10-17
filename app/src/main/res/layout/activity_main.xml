@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Licznik: 0"
+        android:text="Licznik ruchów: 0"
         android:textSize="24sp" />
 
     <GridLayout

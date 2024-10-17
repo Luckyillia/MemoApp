@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     buttonIsCheacked1.setEnabled(true);
                     buttonIsCheacked2 = null;
                     buttonIsCheacked1 = button;
+                    button.setImageDrawable(currentImage);
                     buttonIsCheacked1.setEnabled(false);
                 }else {
                     if (buttonIsCheacked1 != null) {
@@ -87,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Zgadles!", Toast.LENGTH_SHORT).show();
                             buttonIsCheacked1 = null;
                             buttonIsCheacked2 = null;
+                        }else{
+                            buttonIsCheacked1.setEnabled(true);
                         }
                         count++;
                         textView.setText("Licznik ruchow: "+count);

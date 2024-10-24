@@ -2,6 +2,7 @@ package com.example.memoapp;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private Drawable default_image;
     private int count = 0;
     private TextView textView;
+    private boolean finish = false;
+    private int[] buttonIDs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         Button butto = findViewById(R.id.button);
         textView = findViewById(R.id.counter);
         default_image = ContextCompat.getDrawable(this, R.drawable.karty_00);
+        Log.w("LogImage", String.valueOf(default_image));
 
         //tworzenie listy zdjec
         images = new ArrayList<>();
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         //tworzenie listy przyciskow
         buttons = new ArrayList<>();
         //tworzenie listy id przyciskow
-        int[] buttonIDs = {
+        buttonIDs = new int[]{
                 R.id.karta1, R.id.karta2, R.id.karta3, R.id.karta4,
                 R.id.karta5, R.id.karta6, R.id.karta7, R.id.karta8,
                 R.id.karta9, R.id.karta10, R.id.karta11, R.id.karta12,
@@ -67,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
             ImageButton button = buttons.get(i);
             int index = i;
             button.setOnClickListener(v -> {
+                Log.i("LogImage", String.valueOf(button.getDrawable()));
+                Log.d("LogImage", String.valueOf(default_image));
                 Drawable currentImage = images.get(index);
                 button.setImageDrawable(currentImage);
                 //logika gry
@@ -85,9 +91,10 @@ public class MainActivity extends AppCompatActivity {
                         if (buttonIsCheacked1.getDrawable().getConstantState().equals(buttonIsCheacked2.getDrawable().getConstantState())) {
                             buttonIsCheacked1.setEnabled(false);
                             buttonIsCheacked2.setEnabled(false);
-                            Toast.makeText(MainActivity.this, "Zgadles!", Toast.LENGTH_SHORT).show();
                             buttonIsCheacked1 = null;
                             buttonIsCheacked2 = null;
+                            Toast.makeText(MainActivity.this, "Zgadles!", Toast.LENGTH_SHORT).show();
+                            isFinish();
                         }else{
                             buttonIsCheacked1.setEnabled(true);
                         }
@@ -97,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
                         buttonIsCheacked1 = button;
                         buttonIsCheacked1.setEnabled(false);
                     }
+                }
+                if(finish){
+                    Toast.makeText(MainActivity.this, "Wygrales! Twoja liczba ruchow to "+count, Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -111,6 +121,18 @@ public class MainActivity extends AppCompatActivity {
             textView.setText("Licznik ruchow: "+count);
             buttonIsCheacked1 = null;
             buttonIsCheacked2 = null;
+            finish = false;
         });
+    }
+    public void isFinish(){
+        //Sparaw
+        for (int i = 0; i < buttons.size(); i++) {
+            ImageButton button = buttons.get(i);
+            if(String.valueOf(button.getDrawable()) == String.valueOf(default_image)){
+                finish = true;
+            }else{
+                finish = false;
+            }
+        }
     }
 }
